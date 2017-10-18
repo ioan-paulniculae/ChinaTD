@@ -9,6 +9,7 @@ public class EnemySpawner : MonoBehaviour {
 	public GameObject[] spawners;
 
 	public float spawnTimer = 2.0f;
+	public float enemiesToSpawn = 2;
 
 	private float elapsedTime = 0.0f;
 
@@ -20,12 +21,14 @@ public class EnemySpawner : MonoBehaviour {
 	void spawnEnemy() {
 		foreach (GameObject spawner in spawners) {
 			if (enemyPrefabs.Length > 0) {
-				EnemyMovementController newEnemy = Instantiate (enemyPrefabs [0]);
-				Vector3 spawnerPosition = spawner.transform.position;
+				for (int i = 0; i < enemiesToSpawn; i++) {
+					EnemyMovementController newEnemy = Instantiate (enemyPrefabs [0]);
+					Vector3 spawnerPosition = spawner.transform.position;
 
-				newEnemy.transform.position = spawnerPosition;
-				newEnemy.transform.Translate (Vector3.back * 0.5f);
-				newEnemy.setTarget (this.objective);
+					newEnemy.transform.position = spawnerPosition;
+					newEnemy.transform.Translate (Vector3.back * 0.5f);
+					newEnemy.setPath (spawner.GetComponent<SpawnerTile> ().pathPoints);
+				}
 			}
 		}
 	}
