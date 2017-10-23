@@ -28,7 +28,7 @@ public class TowerBehaviour : MonoBehaviour {
         if(targetList.Count > 0 )
         {
             cooldown = fireRate;
-            //shoot at targetQueue.Peek()
+            //shoot at targetList   
         }
 
     }
