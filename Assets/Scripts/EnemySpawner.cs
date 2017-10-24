@@ -47,10 +47,14 @@ public class EnemySpawner : MonoBehaviour {
 	public List<EnemyWave> presetEnemyWaves;
 
 	private float spawnTimer = 2.0f;
+	private EnemyWave currentWave;
+	private EnemyWave nextWave;
 
 	/* Prepare first wave. */
 	void Start () {
-		StartCoroutine (StartWave (gameStartTimer, GetNextWave()));
+		nextWave = GetNextWave ();
+		uiCanvas.UpdateNextWaveTypeText (nextWave);
+		StartCoroutine (StartNextWave (gameStartTimer));
 	}
 
 	/* To be used for debug purposes mainly. */
@@ -101,19 +105,23 @@ public class EnemySpawner : MonoBehaviour {
 	}
 
 	/* Waits for a number of seconds then starts spawning a wave. */
-	IEnumerator StartWave(float seconds, EnemyWave enemyWave) {
+	IEnumerator StartNextWave(float seconds) {
 		spawnTimer = seconds;
 
 		/* Waits for the given number of seconds. */
 		while (spawnTimer > 0) {
-			uiCanvas.UpdateNextWaveText (spawnTimer);
+			uiCanvas.UpdateNextWaveTimerText (spawnTimer);
 			yield return new WaitForSeconds (1.0f);
 			spawnTimer -= 1.0f;
 		}
-		uiCanvas.UpdateNextWaveText (0.0f);
+
+		/* Updates the UI texts. */
+		currentWave = nextWave;
+		uiCanvas.UpdateCurrentWaveText (currentWave);
+		uiCanvas.HideNextWaveTypeText ();
 
 		/* Spawn the next wave. */
-		StartCoroutine (SpawnEnemyRoutine (enemyWave));
+		StartCoroutine (SpawnEnemyRoutine (currentWave));
 	}
 
 	/* Spawns a wave of enemies and starts the timer for the next wave. */
@@ -126,6 +134,8 @@ public class EnemySpawner : MonoBehaviour {
 		}
 
 		/* Enemies finished spawning. Now we can start the timer for the next wave. */
-		StartCoroutine (StartWave (Random.Range((int)minWaveInterval, (int)maxWaveInterval), GetNextWave()));
+		nextWave = GetNextWave ();
+		uiCanvas.UpdateNextWaveTypeText (nextWave);
+		StartCoroutine (StartNextWave (Random.Range((int)minWaveInterval, (int)maxWaveInterval)));
 	}
 }

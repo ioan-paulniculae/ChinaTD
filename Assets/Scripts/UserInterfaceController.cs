@@ -12,11 +12,33 @@ public class UserInterfaceController : MonoBehaviour {
 		t.text = "Lives: " + lives;
 	}
 
-	public void UpdateNextWaveText(float timeLeft) {
+	public void UpdateNextWaveTimerText(float timeLeft) {
 		Transform infoPanelTransform = transform.Find ("infoPanel");
-		Transform nextWaveTextTransform = infoPanelTransform.Find ("nextWaveText");
+		Transform nextWaveTextTransform = infoPanelTransform.Find ("nextWaveTimerText");
 		Text t = nextWaveTextTransform.GetComponent<Text> ();
 		t.text = "Next wave in: " + timeLeft + "s.";
+	}
+
+	public void UpdateCurrentWaveText(EnemyWave currentWave) {
+		Transform infoPanelTransform = transform.Find ("infoPanel");
+		Transform nextWaveTextTransform = infoPanelTransform.Find ("nextWaveTimerText");
+		Text t = nextWaveTextTransform.GetComponent<Text> ();
+		t.text = "Current wave: " + currentWave.enemyType.ToString();
+	}
+
+	public void SetNextWaveTypeText(string s) {
+		Transform infoPanelTransform = transform.Find ("infoPanel");
+		Transform nextWaveTextTransform = infoPanelTransform.Find ("nextWaveTypeText");
+		Text t = nextWaveTextTransform.GetComponent<Text> ();
+		t.text = s;
+	}
+
+	public void HideNextWaveTypeText() {
+		SetNextWaveTypeText ("");
+	}
+
+	public void UpdateNextWaveTypeText(EnemyWave nextWave) {
+		SetNextWaveTypeText ("Next wave: " + nextWave.enemyType.ToString ());
 	}
 
 	// Use this for initialization
