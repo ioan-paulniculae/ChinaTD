@@ -24,6 +24,10 @@ public class UserInterfaceController : MonoBehaviour {
 		Transform nextWaveTextTransform = infoPanelTransform.Find ("nextWaveTimerText");
 		Text t = nextWaveTextTransform.GetComponent<Text> ();
 		t.text = "Current wave: " + currentWave.enemyType.ToString();
+
+		if (currentWave.modifier != EnemySpawner.EnemyWaveModifierType.NONE) {
+			t.text += ", " + currentWave.modifier.ToString ();
+		}
 	}
 
 	public void SetNextWaveTypeText(string s) {

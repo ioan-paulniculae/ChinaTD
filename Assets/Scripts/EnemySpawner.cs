@@ -11,11 +11,14 @@ public class EnemySpawner : MonoBehaviour {
 		BOSS
 	}
 
-	public enum ModifierType {
+	public enum EnemyWaveModifierType {
+		NONE,
 		SWARMING,
-		RESISTANT,
+		HARDENED,
 		AGILE
 	}
+	private static EnemyWaveModifierType[] modifierTypes = new EnemyWaveModifierType[]{EnemyWaveModifierType.NONE,
+		EnemyWaveModifierType.SWARMING, EnemyWaveModifierType.HARDENED, EnemyWaveModifierType.AGILE};
 
 	[System.Serializable]
 	public class EnemyPrefabEntry
@@ -41,12 +44,19 @@ public class EnemySpawner : MonoBehaviour {
 
 	[Tooltip("Maximum amount of time between waves.")]
 	public float maxWaveInterval = 10.0f;
+
+	[Tooltip("Minimum number of waves until a special wave spawns.")]
+	public int minSpecialWaveInterval = 3;
+
+	[Tooltip("Maximum number of waves until a special wave spawns.")]
+	public int maxSpecialWaveInterval = 5;
 	[Space]
 
 	[Tooltip("A preset list of waves for the beginning of the game.")]
 	public List<EnemyWave> presetEnemyWaves;
 
 	private float spawnTimer = 2.0f;
+	private int specialWaveCountdown = 0;
 	private EnemyWave currentWave;
 	private EnemyWave nextWave;
 
@@ -71,7 +81,7 @@ public class EnemySpawner : MonoBehaviour {
 
 		return null;
 	}
-
+		
 	/* Gets the next wave. If there are preset waves left, picks the next one.
 	 * Otherwise, returns a random wave. */
 	EnemyWave GetNextWave() {
@@ -84,19 +94,39 @@ public class EnemySpawner : MonoBehaviour {
 			/* Generate a random wave. */
 			EnemyPrefabEntry randomEntry = enemyPrefabEntries[Random.Range(0, enemyPrefabEntries.Length)];
 			int groupCount = Random.Range (randomEntry.minGroupNumber, randomEntry.maxGroupNumber + 1);
-			newWave = new EnemyWave (randomEntry.enemyType, groupCount);
+			EnemyWaveModifierType modifierType = EnemyWaveModifierType.NONE;
+
+			/* Add a modifier if the special wave countdown is up. */
+			specialWaveCountdown -= 1;
+			if (specialWaveCountdown <= 0) {
+				specialWaveCountdown = Random.Range (minSpecialWaveInterval, maxSpecialWaveInterval + 1);
+
+				int randomIndex = Random.Range (1, modifierTypes.Length);
+				modifierType = modifierTypes [randomIndex];
+			}
+
+			newWave = new EnemyWave (randomEntry.enemyType, groupCount, modifierType);
 		}
 
 		return newWave;
 	}
 
 	/* Spawns a group of enemies and sets their waypoints. */
-	void SpawnEnemyGroup(EnemyPrefabEntry enemyPrefabEntry) {
+	void SpawnEnemyGroup(EnemyPrefabEntry enemyPrefabEntry, EnemyWaveModifierType waveModifier) {
+		int groupSize = enemyPrefabEntry.groupSize;
+
+		/* Apply SWARMING wave modifier, if necessary. */
+		if (waveModifier == EnemyWaveModifierType.SWARMING) {
+			groupSize *= 2;
+		}
+			
+		/* Spawn group of enemies. */
 		foreach (GameObject spawner in spawners) {
-			for (int i = 0; i < enemyPrefabEntry.groupSize; i++) {
+			for (int i = 0; i < groupSize; i++) {
 				EnemyMovementController newEnemy = Instantiate (enemyPrefabEntry.enemyPrefab);
 				Vector3 spawnerPosition = spawner.transform.position;
 
+				newEnemy.ApplyWaveModifier (waveModifier);
 				newEnemy.transform.position = spawnerPosition;
 				newEnemy.transform.Translate (Vector3.back * 0.5f);
 				newEnemy.setPath (spawner.GetComponent<SpawnerTile> ().pathPoints);
@@ -129,7 +159,7 @@ public class EnemySpawner : MonoBehaviour {
 		EnemyPrefabEntry enemyPrefabEntry = GetEnemyPrefabEntryForWave (enemyWave);
 
 		for (int i = 0; i < enemyWave.enemyCount; i++) {
-			SpawnEnemyGroup (enemyPrefabEntry);
+			SpawnEnemyGroup (enemyPrefabEntry, enemyWave.modifier);
 			yield return new WaitForSeconds (enemyPrefabEntry.timeBetweenGroups);
 		}
 

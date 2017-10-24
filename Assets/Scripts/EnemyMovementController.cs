@@ -11,6 +11,27 @@ public class EnemyMovementController : MonoBehaviour {
 	private LinkedListNode<GameObject> currentTargetNode;
 	private GameObject currentTarget;
 
+	public void ApplyWaveModifier(EnemySpawner.EnemyWaveModifierType modifier) {
+		SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer> ();
+
+		/* TODO: maybe refactor this without hardcoded values. */
+		switch (modifier) {
+		case EnemySpawner.EnemyWaveModifierType.NONE:
+			break;
+		case EnemySpawner.EnemyWaveModifierType.AGILE:
+			spriteRenderer.color = new Color (0, 255, 0);
+			speed *= 2;
+			break;
+		case EnemySpawner.EnemyWaveModifierType.HARDENED:
+			spriteRenderer.color = new Color (0, 0, 255);
+			gameObject.GetComponent<EnemyStats> ().health *= 2;
+			break;
+		case EnemySpawner.EnemyWaveModifierType.SWARMING:
+			spriteRenderer.color = new Color (255, 0, 0);
+			break;
+		}
+	}
+
 	public void setPath(GameObject[] pathPoints) {
 		this.pathPoints = new LinkedList<GameObject>(pathPoints);
 		this.currentTargetNode = this.pathPoints.First;
