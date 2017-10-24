@@ -35,7 +35,6 @@ public class EnemyMovementController : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
-		Debug.Log (coll.gameObject);
 		if (coll.gameObject.tag == "PathPoint") {
 			setNextTarget ();
 		}

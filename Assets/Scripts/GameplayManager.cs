@@ -30,7 +30,7 @@ public class GameplayManager : MonoBehaviour {
 
 	public void substractLives(int livesToSubstract) {
 		playerLives -= livesToSubstract;
-		uiCanvas.updateLivesText (playerLives);
+		uiCanvas.UpdateLivesText (playerLives);
 	}
 
 	// Use this for initialization
@@ -39,7 +39,7 @@ public class GameplayManager : MonoBehaviour {
 		buildableTiles = FindObjectsOfType (typeof(BuildableTile)) as BuildableTile[];
 
 		// Update UI elements.
-		uiCanvas.updateLivesText(playerLives);
+		uiCanvas.UpdateLivesText(playerLives);
 	}
 	
 	// Update is called once per frame

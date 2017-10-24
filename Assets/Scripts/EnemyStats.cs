@@ -6,4 +6,8 @@ public class EnemyStats : MonoBehaviour {
 
 	public float health = 5.0f;
 	public int livesCost = 1;
+
+	void OnDestroy() {
+		
+	}
 }
