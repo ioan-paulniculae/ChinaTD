@@ -43,6 +43,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Environment
+    uniqueID: 920443065
+    locked: 0
   - name: Tower
     uniqueID: 2825914757
     locked: 0
