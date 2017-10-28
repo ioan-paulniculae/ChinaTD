@@ -1,0 +1,30 @@
+Test case - Launch:
+
+	Scenario: Started the game
+
+	Result: The game launched without promblems. (Expected result)
+
+Test case - Size of phone screen:
+
+	Scenario: Opened the game on smartphone (5.2 inches screen) using Unity Remote 5.
+	
+	Result: 
+		- On landscpae mode, the map looks like it should. (Expected result)
+			- Screenshot attached to task
+	
+	Observation: There is more space on a smartphone screen to expand the map.
+	
+Test case - Lives counter:
+	
+	Scenario: Opened the game, let enemies spawn and the game run its course.
+	
+	Result: 
+		- Enemies spawned moving towards the player. (Expected result)
+		- Enemies died/disappeared when reaching the player. (Expected result)
+		- Each enemy that reached the player took one life. (Expected result)		
+			
+UNEXPECTED results:
+	-On the smartphone, on portait mode, the map is compressed;
+	- The game doesn't stop when the number of lives is 0, instead the game continues with the number of lives decrementing to negative values.
+		- Screenshots attached to task
+	
