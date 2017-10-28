@@ -1,0 +1,37 @@
+Test case - Waving system: Enemy types
+
+	Scenario: Started the game and let it run its course to see what enemy types are spawned and with what modifier.
+	
+	Result: Encountered every type of combination between enemies and modifiers(except Boss). (Expected result)
+				E.g. "Groung, Swarming", "Swarm, Hardened", "Flying, Agile" etc. 
+	
+	Obs: We could give an enemy type just 2 out of the 3 types of modifiers, while the third to act like a passive. For example:
+	
+		Ground -> Agile or Swarming (grounds should have as a passive more health)
+		Swarm -> Agile or Hardened (avoiding redundency "Swarm, Swarming")
+		Flying-> Warming or hardened (Flying should have as a passive a bit more speed than the others)
+		
+			- Screenshots attached to task
+
+		
+Test case - Waving system: Spawn time
+
+	Scenario: Changed the spawn timer in between waves and started the game to see how the scene plays out.
+	
+	Result: Enemies are spawning at different periods of time between them. (Expected result)
+		
+Test case - Waving system: Enemy speed
+
+	Scenario: Changed the speed of every enemy type and started the game to see how the scene plays out.
+	
+	Result: Every enemy has its own speed. (Expected result)
+	
+	Obs: On the map, in a straight line, an enemy can't go past another enemy in front of them, 
+			and if the former has more speed than the latter, 
+			this will result in the enemy in front to be pushed from behind (gaining speed).
+		When taking a corner, depending on their speed, the enemy behind can overtake the enemy in the front.
+		
+			- Screenshots attached to task (corner.png, line.png)
+
+	
+	
