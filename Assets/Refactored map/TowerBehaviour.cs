@@ -5,36 +5,45 @@ using UnityEngine;
 public class TowerBehaviour : MonoBehaviour {
 
     public float range;
-
-    CircleCollider2D collider;
+    
     public float fireRate;
-    public GameObject projectile;
+    public Transform projectile;
 
     List<GameObject> targetList = new List<GameObject>();
     float cooldown;
 
     // Use this for initialization
     void Start () {
-        collider = gameObject.GetComponent<CircleCollider2D>();
-        collider.radius = range;
+        gameObject.GetComponent<CircleCollider2D>().radius = range;
         cooldown = 0;
         targetList = new List<GameObject>();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if( cooldown > 0)
+
+        if (targetList.Count > 0)
+            while ( targetList[targetList.Count - 1] == null)
+            {
+                targetList.RemoveAt(targetList.Count - 1);
+            }
+
+        if (cooldown > 0)
+        {
             cooldown -= Time.deltaTime;
-        if(targetList.Count > 0 )
+        }
+        else if(targetList.Count > 0 )
         {
             cooldown = fireRate;
-            //shoot at targetList   
+            Transform proj = Instantiate(projectile, gameObject.transform.position, Quaternion.identity);
+            proj.GetComponent<ProjectileBehaviour>().target = targetList[targetList.Count-1].transform;
+            //shoot at last member of targetlist   
         }
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        
         targetList.Add(collision.gameObject);
     }
 

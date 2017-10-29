@@ -39,7 +39,7 @@ public class Builder : MonoBehaviour
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             mousePos = tilemap.WorldToCell(new Vector3(ray.origin.x, ray.origin.y, 0));
 
-
+            //verifia daca se poate construi
             if( !buildableTilemap.HasTile(mousePos))
             {
                 tilemap.SetTile(mousePos, towerSprite);
