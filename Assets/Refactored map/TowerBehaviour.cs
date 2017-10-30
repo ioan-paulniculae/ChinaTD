@@ -36,19 +36,35 @@ public class TowerBehaviour : MonoBehaviour {
         {
             cooldown = fireRate;
             Transform proj = Instantiate(projectile, gameObject.transform.position, Quaternion.identity);
-            proj.GetComponent<ProjectileBehaviour>().target = targetList[targetList.Count-1].transform;
-            //shoot at last member of targetlist   
+            proj.GetComponent<ProjectileBehaviour>().target = targetList[0].transform;
+            //shoot at first member of targetlist   
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    Debug.Log("enemy");
+    //    targetList.Add(collision.gameObject);
+    //}
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        
-        targetList.Add(collision.gameObject);
+        if (other.tag == "Enemy")
+        {
+            targetList.Add(other.gameObject);
+        }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        targetList.Remove(collision.gameObject);
+        if (other.tag == "Enemy")
+        {
+            targetList.Remove(other.gameObject);
+        }
     }
+
+    //private void OnCollisionExit2D(Collision2D collision)
+    //{
+    //    targetList.Remove(collision.gameObject);
+    //}
 }

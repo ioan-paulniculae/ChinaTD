@@ -6,6 +6,8 @@ public class ProjectileBehaviour : MonoBehaviour {
 
     public Transform target;
     public float speed;
+    public float damage = 2.0f;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -13,13 +15,31 @@ public class ProjectileBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-        transform.LookAt(target.position);
+        MoveTowardsTarget();
+    }
+
+    private void MoveTowardsTarget()
+    {
+        if (target != null) {
+            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            transform.rotation = Quaternion.identity;
+        } else {
+            // If the enemy is already dead, the projectile disappears?
+            Destroy(gameObject);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(collision.gameObject);
-        Destroy(gameObject);
+        if (collision.gameObject.tag == "Enemy")
+        {
+            // Destroy the projectile.
+            Destroy(gameObject);
+
+            // Damage the enemy.
+            EnemyStats enemyStats = collision.gameObject.GetComponent<EnemyStats>();
+            enemyStats.ReceiveDamage(damage);
+        }
+
     }
 }
