@@ -10,7 +10,6 @@ public class Builder : MonoBehaviour
 
     //tilemap which contains sprites that can't be built on
     public Tilemap buildableTilemap;
-
     private Ray ray;
     private Vector3Int mousePos;
 
@@ -29,11 +28,12 @@ public class Builder : MonoBehaviour
 
     void Start()
     {
-
+        
     }
 
     void Update()
     {
+        
         if( Input.GetKeyDown("mouse 0"))
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
