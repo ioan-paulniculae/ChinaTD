@@ -70,10 +70,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   speed: 2
-  damage: 10
+  damage: 1
   targetsGround: 1
   targetsAir: 0
-  splashDamage: 0
+  splashDamage: 1
   splashRange: 3
 --- !u!212 &212858063897163990
 SpriteRenderer:
