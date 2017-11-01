@@ -561,7 +561,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 438997098}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 629.5, y: 211, z: 0}
+  m_LocalPosition: {x: 628.5, y: 211, z: 0}
   m_LocalScale: {x: 0.7033333, y: 0.7033333, z: 0.7033333}
   m_Children:
   - {fileID: 472436950}
@@ -1164,8 +1164,9 @@ GameObject:
   - component: {fileID: 591262164}
   - component: {fileID: 591262163}
   - component: {fileID: 591262162}
+  - component: {fileID: 591262165}
   m_Layer: 5
-  m_Name: Button
+  m_Name: TowerNo1
   m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1250,8 +1251,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 399fe6ff6f33f314da4d4cbf4406158d, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1264,6 +1265,22 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 591262160}
+--- !u!114 &591262165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 591262160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 386954652e242ba4b8d540dd1a756b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  towerPrefab: {fileID: 4554811638856866, guid: 2a0b9f0b75b06c14eb790c53b0362769,
+    type: 2}
+  towerSprite: {fileID: 11400000, guid: 684623c5fbad30d46b31e3c29e8ab6ab, type: 2}
+  towerMap: {fileID: 1847368951}
+  buildableTilemap: {fileID: 781863650}
 --- !u!1 &616026337
 GameObject:
   m_ObjectHideFlags: 0
@@ -4714,15 +4731,15 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1847368947}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e4ef33700d37344b8f9e4054fe80626, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   buildableTilemap: {fileID: 781863650}
   towerSprite: {fileID: 11400000, guid: 684623c5fbad30d46b31e3c29e8ab6ab, type: 2}
-  towerPrefab: []
-  selectedTower: 0
+  towerPrefab: {fileID: 4554811638856866, guid: 2a0b9f0b75b06c14eb790c53b0362769,
+    type: 2}
 --- !u!483693784 &1847368950
 TilemapRenderer:
   m_ObjectHideFlags: 0
