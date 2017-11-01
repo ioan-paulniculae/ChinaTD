@@ -5,7 +5,10 @@ using UnityEngine;
 public class TowerBehaviour : MonoBehaviour {
 
     public float range;
-    
+
+    public bool targetsGround = true;
+    public bool targetsAir = false;
+
     public float fireRate;
     public Transform projectile;
 
@@ -41,15 +44,14 @@ public class TowerBehaviour : MonoBehaviour {
         }
     }
 
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    Debug.Log("enemy");
-    //    targetList.Add(collision.gameObject);
-    //}
-
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Enemy")
+        if (targetsGround && other.tag == "Enemy")
+        {
+            targetList.Add(other.gameObject);
+        }
+
+        if (targetsAir && other.tag == "AirEnemy")
         {
             targetList.Add(other.gameObject);
         }
@@ -57,14 +59,14 @@ public class TowerBehaviour : MonoBehaviour {
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.tag == "Enemy")
+        if (targetsGround && other.tag == "Enemy")
+        {
+            targetList.Remove(other.gameObject);
+        }
+
+        if (targetsAir && other.tag == "AirEnemy")
         {
             targetList.Remove(other.gameObject);
         }
     }
-
-    //private void OnCollisionExit2D(Collision2D collision)
-    //{
-    //    targetList.Remove(collision.gameObject);
-    //}
 }
