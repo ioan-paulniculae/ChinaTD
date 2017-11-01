@@ -8,6 +8,12 @@ public class ProjectileBehaviour : MonoBehaviour {
     public float speed;
     public float damage = 2.0f;
 
+    public bool targetsGround = true;
+    public bool targetsAir = false;
+
+    public bool splashDamage = false;
+    public float splashRange = 1.0f;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -15,31 +21,69 @@ public class ProjectileBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        LookAtTarget();
         MoveTowardsTarget();
+    }
+
+    private void DamageEnemy(GameObject enemy)
+    {
+        EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
+        enemyStats.ReceiveDamage(damage);
+    }
+
+    private void LookAtTarget() {
+        if (target != null)
+        {
+            Vector3 direction = target.transform.position - transform.position;
+            float rotationZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationZ);
+        }
     }
 
     private void MoveTowardsTarget()
     {
         if (target != null) {
             transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-            transform.rotation = Quaternion.identity;
         } else {
             // If the enemy is already dead, the projectile disappears?
             Destroy(gameObject);
         }
     }
 
+	private bool CanTarget(string tag) {
+		if (targetsGround && tag == "Enemy") {
+			return true;
+		} else if (targetsAir && tag == "AirEnemy") {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Enemy")
-        {
-            // Destroy the projectile.
-            Destroy(gameObject);
+		if (CanTarget (collision.gameObject.tag)) {
+			CollideWithEnemy (collision);
+		}
+    }
 
-            // Damage the enemy.
-            EnemyStats enemyStats = collision.gameObject.GetComponent<EnemyStats>();
-            enemyStats.ReceiveDamage(damage);
+    private void CollideWithEnemy(Collision2D collision)
+    {
+        // For splash damage projectiles, find all enemies in the given radius and damage them.
+        if (splashDamage) {
+			Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, splashRange);
+			foreach (Collider2D coll in hitColliders) {
+				if (CanTarget (coll.gameObject.tag)) {
+					DamageEnemy (coll.gameObject);
+				}
+            }
+        }
+		// For single target projectiles, damage the enemy it collided with.
+        else {
+            DamageEnemy(collision.gameObject);
         }
 
+        // Destroy the projectile.
+        Destroy(gameObject);
     }
 }

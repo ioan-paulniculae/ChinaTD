@@ -17,7 +17,7 @@ public class ObjectiveController : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
-		if (coll.gameObject.tag == "Enemy") {
+		if (coll.gameObject.tag == "Enemy" || coll.gameObject.tag == "AirEnemy") {
 			GameObject enemyObject = coll.gameObject;
 			EnemyStats enemyStats = enemyObject.GetComponent<EnemyStats> ();
 
