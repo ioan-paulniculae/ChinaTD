@@ -12,7 +12,7 @@ public class ProjectileBehaviour : MonoBehaviour {
     public bool targetsAir = false;
 
     public bool splashDamage = false;
-    public float splashRange = 30.0f;
+    public float splashRange = 1.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -50,33 +50,36 @@ public class ProjectileBehaviour : MonoBehaviour {
         }
     }
 
+	private bool CanTarget(string tag) {
+		if (targetsGround && tag == "Enemy") {
+			return true;
+		} else if (targetsAir && tag == "AirEnemy") {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (targetsGround && collision.gameObject.tag == "Enemy")
-        {
-            CollideWithEnemy(collision);
-        }
-
-        if (targetsAir && collision.gameObject.tag == "AirEnemy")
-        {
-            CollideWithEnemy(collision);
-        }
-
+		if (CanTarget (collision.gameObject.tag)) {
+			CollideWithEnemy (collision);
+		}
     }
 
     private void CollideWithEnemy(Collision2D collision)
     {
-        // Damage the enemy.
-        if (splashDamage)
-        {
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, splashRange);
-            foreach (Collider coll in hitColliders)
-            {
-                DamageEnemy(coll.gameObject);
+        // For splash damage projectiles, find all enemies in the given radius and damage them.
+        if (splashDamage) {
+			Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, splashRange);
+			foreach (Collider2D coll in hitColliders) {
+				if (CanTarget (coll.gameObject.tag)) {
+					DamageEnemy (coll.gameObject);
+				}
             }
         }
-        else
-        {
+		// For single target projectiles, damage the enemy it collided with.
+        else {
             DamageEnemy(collision.gameObject);
         }
 
