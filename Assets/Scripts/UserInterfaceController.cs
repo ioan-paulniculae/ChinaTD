@@ -45,6 +45,13 @@ public class UserInterfaceController : MonoBehaviour {
 		SetNextWaveTypeText ("Next wave: " + nextWave.enemyType.ToString ());
 	}
 
+	public void SetPersistentCurrencyText(string persistentCurrencyName, int persistentCurrency) {
+		Transform infoPanelTransform = transform.Find ("infoPanel");
+		Transform persistentCurrencyTransform = infoPanelTransform.Find ("persistentCurrencyText");
+		Text t = persistentCurrencyTransform.GetComponent<Text> ();
+		t.text = persistentCurrencyName + ": " + persistentCurrency;
+	}
+
 	// Use this for initialization
 	void Start () {
 		

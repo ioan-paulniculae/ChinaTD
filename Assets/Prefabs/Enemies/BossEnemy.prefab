@@ -172,6 +172,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 50
   livesCost: 5
+  persistentCurrencyDropRate: 1
+  persistentCurrencyMinDropAmount: 5
+  persistentCurrencyMaxDropAmount: 10
 --- !u!114 &114210904669401916
 MonoBehaviour:
   m_ObjectHideFlags: 1

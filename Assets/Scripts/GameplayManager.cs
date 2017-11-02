@@ -10,6 +10,7 @@ public class GameplayManager : MonoBehaviour {
 
 	private BuildableTile[] buildableTiles;
 	private bool buildModeEnabled = false;
+	private PersistentCurrencyManager persistentCurrencyManager;
 
 	public bool getBuildModeEnabled() {
 		return buildModeEnabled;
@@ -34,6 +35,16 @@ public class GameplayManager : MonoBehaviour {
 		uiCanvas.UpdateLivesText (playerLives);
 	}
 
+	public void EnemyKilled(EnemyStats enemyStats) {
+		// Notify the persistent currency manager of an enemy kill.
+		int persistentCurrencyGiven = persistentCurrencyManager.EnemyKilled(enemyStats);
+	}
+
+	private void GameOver() {
+		// Save the game state (persistent currency).
+		SaveLoad.Save();
+	}
+
 	// Use this for initialization
 	void Start () {
 		// Get references to buildable tiles.
@@ -41,12 +52,23 @@ public class GameplayManager : MonoBehaviour {
 
 		// Update UI elements.
 		uiCanvas.UpdateLivesText(playerLives);
+
+		// Get a reference to the persistent currency manager singleton.
+		persistentCurrencyManager = PersistentCurrencyManager.instance;
+
+		// Load the saved game state (useful for running the game directly through the main scene).
+		SaveLoad.Load();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (playerLives <= 0) {
+			GameOver ();
 			SceneManager.LoadScene ("Game Over", LoadSceneMode.Single);
 		}
+
+		// Update persistent currency text.
+		uiCanvas.SetPersistentCurrencyText(persistentCurrencyManager.persistentCurrencyName,
+			persistentCurrencyManager.getPersistentCurrency());
 	}
 }
