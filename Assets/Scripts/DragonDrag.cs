@@ -37,7 +37,9 @@ public class DragonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     {
         transform.position = eventData.position;
 
-        range.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        range.position = new Vector3(ray.origin.x, ray.origin.y, 0);
         range.localScale = dragonPrefab.localScale * dragonPrefab.GetComponent<DragonBehaviour>().range * 2;
     }
 
@@ -49,7 +51,8 @@ public class DragonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     {
         transform.position = startPosition;
 
-        Instantiate(dragonPrefab, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Instantiate(dragonPrefab, new Vector3(ray.origin.x, ray.origin.y, 0), Quaternion.identity);
         Debug.Log(Input.mousePosition);
         GetComponent<Image>().color = Color.white;
 

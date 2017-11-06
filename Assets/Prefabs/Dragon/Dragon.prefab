@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fca0876015642b4bacba84e7db47c50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 6
+  range: 5
   targetsGround: 1
   targetsAir: 1
   fireRate: 0.5

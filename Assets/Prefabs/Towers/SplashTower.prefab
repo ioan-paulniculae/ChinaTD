@@ -70,7 +70,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 5
   targetsGround: 1
-  targetsAir: 1
+  targetsAir: 0
   fireRate: 1
   projectile: {fileID: 4125539985859456, guid: e8578ed31b6a0024ea52e8cb8072f2e3, type: 2}
 --- !u!212 &212085760041086948
