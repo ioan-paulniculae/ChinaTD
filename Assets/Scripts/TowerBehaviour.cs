@@ -2,10 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TowerType {
+	BASIC_TOWER,
+	SPLASH_TOWER,
+	ANTIAIR_TOWER
+}
+
 public class TowerBehaviour : MonoBehaviour {
 
     public float range;
 
+	public TowerType type;
     public bool targetsGround = true;
     public bool targetsAir = false;
 
@@ -14,12 +21,14 @@ public class TowerBehaviour : MonoBehaviour {
 
     List<GameObject> targetList = new List<GameObject>();
     float cooldown;
+	PersistentUpgradesManager persistentUpgradesManager = PersistentUpgradesManager.instance;
 
     // Use this for initialization
     void Start () {
         gameObject.GetComponent<CircleCollider2D>().radius = range;
         cooldown = 0;
         targetList = new List<GameObject>();
+		ApplyPersistentUpgrades ();
     }
 	
 	// Update is called once per frame
@@ -69,4 +78,65 @@ public class TowerBehaviour : MonoBehaviour {
             targetList.Remove(other.gameObject);
         }
     }
+
+	private float GetDamageUpgradeEffect() {
+		switch (type) {
+		case TowerType.BASIC_TOWER:
+			return persistentUpgradesManager.GetUpgrade(UpgradeType.BASIC_TOWER_DAMAGE).GetCurrentEffect();
+		case TowerType.SPLASH_TOWER:
+			return persistentUpgradesManager.GetUpgrade(UpgradeType.SPLASH_TOWER_DAMAGE).GetCurrentEffect();
+		case TowerType.ANTIAIR_TOWER:
+			return persistentUpgradesManager.GetUpgrade(UpgradeType.ANTIAIR_TOWER_DAMAGE).GetCurrentEffect();
+		}
+
+		// Fallback.
+		return 0;
+	}
+
+	private float GetAttackSpeedUpgradeEffect() {
+		switch (type) {
+		case TowerType.BASIC_TOWER:
+			return persistentUpgradesManager.GetUpgrade(UpgradeType.BASIC_TOWER_ATTACKSPEED).GetCurrentEffect();
+		case TowerType.SPLASH_TOWER:
+			return persistentUpgradesManager.GetUpgrade(UpgradeType.SPLASH_TOWER_ATTACKSPEED).GetCurrentEffect();
+		case TowerType.ANTIAIR_TOWER:
+			return persistentUpgradesManager.GetUpgrade(UpgradeType.ANTIAIR_TOWER_ATTACKSPEED).GetCurrentEffect();
+		}
+
+		// Fallback.
+		return 0;
+	}
+
+	private float GetRangeUpgradeEffect() {
+		switch (type) {
+		case TowerType.BASIC_TOWER:
+			return persistentUpgradesManager.GetUpgrade(UpgradeType.BASIC_TOWER_RANGE).GetCurrentEffect();
+		case TowerType.SPLASH_TOWER:
+			return persistentUpgradesManager.GetUpgrade(UpgradeType.SPLASH_TOWER_RANGE).GetCurrentEffect();
+		case TowerType.ANTIAIR_TOWER:
+			return persistentUpgradesManager.GetUpgrade(UpgradeType.ANTIAIR_TOWER_RANGE).GetCurrentEffect();
+		}
+
+		// Fallback.
+		return 0;
+	}
+
+	private void ApplyPersistentUpgrades() {
+		ApplyDamageUpgrade ();
+		ApplyAttackSpeedUpgrade ();
+		ApplyRangeUpgrade ();
+	}
+
+	private void ApplyDamageUpgrade() {
+		ProjectileBehaviour projectileBehaviour = projectile.GetComponent<ProjectileBehaviour> ();
+		projectileBehaviour.damage *= (1 + GetDamageUpgradeEffect ());
+	}
+
+	private void ApplyAttackSpeedUpgrade() {
+		fireRate /= (1 + GetAttackSpeedUpgradeEffect ());
+	}
+
+	private void ApplyRangeUpgrade() {
+		range *= (1 + GetRangeUpgradeEffect ());
+	}
 }

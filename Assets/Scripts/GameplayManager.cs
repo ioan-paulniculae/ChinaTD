@@ -68,7 +68,7 @@ public class GameplayManager : MonoBehaviour {
 		}
 
 		// Update persistent currency text.
-		uiCanvas.SetPersistentCurrencyText(persistentCurrencyManager.persistentCurrencyName,
-			persistentCurrencyManager.getPersistentCurrency());
+		uiCanvas.SetPersistentCurrencyText(PersistentCurrencyManager.persistentCurrencyName,
+			persistentCurrencyManager.GetPersistentCurrency());
 	}
 }

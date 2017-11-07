@@ -6,10 +6,9 @@ public class PersistentCurrencyManager {
 
 	private static PersistentCurrencyManager _instance;
 
-	// TODO: load this from the persistent file.
 	private int persistentCurrency = 0;
 
-	public string persistentCurrencyName = "Diamonds";
+	public static string persistentCurrencyName = "Diamonds";
 
 	public static PersistentCurrencyManager instance {
 		get {
@@ -19,12 +18,24 @@ public class PersistentCurrencyManager {
 		}
 	}
 
-	public int getPersistentCurrency() {
+	public int GetPersistentCurrency() {
 		return persistentCurrency;
 	}
 
-	public void setPersistentCurrency(int newPersistentCurrency) {
+	public void SetPersistentCurrency(int newPersistentCurrency) {
 		persistentCurrency = newPersistentCurrency;
+	}
+
+	public void SubstractPersistentCurrency(int toSubstract) {
+		persistentCurrency -= toSubstract;
+	}
+
+	public void AddPersistentCurrency(int toAdd) {
+		persistentCurrency += toAdd;
+	}
+
+	public void ResetPersistentCurrency() {
+		persistentCurrency = 0;
 	}
 
 	/* Calculates if any persistent currency dropped from the enemy that was killed.
