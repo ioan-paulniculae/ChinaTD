@@ -2,10 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TowerType {
+	BASIC_TOWER,
+	SPLASH_TOWER,
+	ANTIAIR_TOWER
+}
+
 public class TowerBehaviour : MonoBehaviour {
 
     public float range;
 
+	public TowerType type;
     public bool targetsGround = true;
     public bool targetsAir = false;
 

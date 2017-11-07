@@ -69,6 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 5
+  type: 1
   targetsGround: 1
   targetsAir: 0
   fireRate: 1
