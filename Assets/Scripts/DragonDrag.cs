@@ -6,6 +6,9 @@ using UnityEngine.Tilemaps;
 
 public class DragonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    public float cooldown = 15;
+    public float duration = 10;
+    private float cooldownTimer;
 
     public static GameObject itemBeingDragged;
     Vector3 startPosition;
@@ -13,17 +16,31 @@ public class DragonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public Transform dragonPrefab;
     public Transform range;
+    public Image fillImage;
 
     #region IBeginDragHandler implementation
 
     private void Start()
     {
+        dragonPrefab.GetComponent<DragonBehaviour>().maxDuration = duration;
+        cooldownTimer = 0;
+    }
+
+    private void Update()
+    {
+        if (cooldownTimer > 0)
+        {
+            cooldownTimer -= Time.deltaTime;
+        }
+        fillImage.fillAmount = cooldownTimer / cooldown;
 
     }
 
-
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (cooldownTimer > 0)
+            return;
+
         startPosition = transform.position;
         startParent = transform.parent;
         range.gameObject.SetActive(true);
@@ -35,6 +52,9 @@ public class DragonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (cooldownTimer > 0)
+            return;
+
         transform.position = eventData.position;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -49,6 +69,9 @@ public class DragonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (cooldownTimer > 0)
+            return;
+
         transform.position = startPosition;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -57,6 +80,8 @@ public class DragonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         GetComponent<Image>().color = Color.white;
 
         range.gameObject.SetActive(false);
+
+        cooldownTimer = cooldown;
     }
 
     #endregion

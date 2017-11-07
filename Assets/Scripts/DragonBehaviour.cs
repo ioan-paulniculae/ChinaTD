@@ -20,9 +20,11 @@ public class DragonBehaviour : MonoBehaviour
     public bool targetsAir = true;
     public Transform projectile;
 
+    public float maxDuration = 10;
+    private float duration;
 
-
-    public float duration = 10;
+    private HealthBarController healthBar;
+    private GameplayManager gameplayManager;
 
     // Use this for initialization
     void Start()
@@ -32,11 +34,16 @@ public class DragonBehaviour : MonoBehaviour
         cooldown = 0;
         targetList = new List<GameObject>();
         towerMap = GameObject.Find("TowerMap").GetComponent<Tilemap>();
+
+        duration = maxDuration;
+        healthBar = gameObject.GetComponentInChildren<HealthBarController>();
+        gameplayManager = FindObjectOfType<GameplayManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        UpdateHealthBar();
         MoveBehaviour();
 
         if (targetList.Count > 0)
@@ -65,6 +72,13 @@ public class DragonBehaviour : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    
+    private void UpdateHealthBar()
+    {
+        duration -= Time.deltaTime;
+        float newScale = duration / maxDuration;
+        healthBar.setCurrentHealth(newScale);
+    }
 
     private void MoveBehaviour()
     {
@@ -92,7 +106,7 @@ public class DragonBehaviour : MonoBehaviour
         Vector3 direction = moveTarget - transform.position;
         float rotationZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationZ);
-        
+
     }
 
     private void MoveTowardsTarget()
