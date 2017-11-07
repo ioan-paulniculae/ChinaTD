@@ -14,3 +14,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Game Over.unity
     guid: 03482f0cb61703343839e827280e80d2
+  - enabled: 1
+    path: Assets/PersistentUpgrades.unity
+    guid: f6e76ee676e2e644084eb2c55b8e5378
