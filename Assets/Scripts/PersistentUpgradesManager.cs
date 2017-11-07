@@ -44,7 +44,7 @@ public class PersistentUpgradesManager {
     }
 
     public PersistentUpgrade GetUpgrade(UpgradeType upgradeType) {
-        foreach (PersistentUpgrade upgrade in persistentUpgradesList) {
+		foreach (PersistentUpgrade upgrade in persistentUpgradesList) {
             if (upgrade.info.type == upgradeType) {
                 return upgrade;
             }
