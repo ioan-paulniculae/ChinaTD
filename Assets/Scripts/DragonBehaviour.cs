@@ -14,7 +14,7 @@ public class DragonBehaviour : MonoBehaviour
     private float cooldown;
 
     public float range;
-    public float speed;
+    public float speed = 1.0f;
     public float fireRate;
     public bool targetsGround = true;
     public bool targetsAir = true;
