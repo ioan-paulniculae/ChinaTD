@@ -52,6 +52,13 @@ public class UserInterfaceController : MonoBehaviour {
 		t.text = persistentCurrencyName + ": " + persistentCurrency;
 	}
 
+	public void SetSessionCurrencyText(string sessionCurrencyName, int sessionCurrency) {
+		Transform infoPanelTransform = transform.Find ("infoPanel");
+		Transform sessionCurrencyTransform = infoPanelTransform.Find ("sessionCurrencyText");
+		Text t = sessionCurrencyTransform.GetComponent<Text> ();
+		t.text = sessionCurrencyName + ": " + sessionCurrency;
+	}
+
 	// Use this for initialization
 	void Start () {
 		

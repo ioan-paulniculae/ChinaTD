@@ -7,6 +7,7 @@ public class GameplayManager : MonoBehaviour {
 
 	public int playerLives = 30;
 	public UserInterfaceController uiCanvas;
+	public SessionCurrencyManager sessionCurrencyManager;
 
 	private BuildableTile[] buildableTiles;
 	private bool buildModeEnabled = false;
@@ -38,6 +39,9 @@ public class GameplayManager : MonoBehaviour {
 	public void EnemyKilled(EnemyStats enemyStats) {
 		// Notify the persistent currency manager of an enemy kill.
 		int persistentCurrencyGiven = persistentCurrencyManager.EnemyKilled(enemyStats);
+
+		// Notify the session currency manager of an enemy kill.
+		int sessionCurrencyGiven = sessionCurrencyManager.EnemyKilled(enemyStats);
 	}
 
 	private void GameOver() {
@@ -53,7 +57,7 @@ public class GameplayManager : MonoBehaviour {
 		// Update UI elements.
 		uiCanvas.UpdateLivesText(playerLives);
 
-		// Get a reference to the persistent currency manager singleton.
+		// Get a reference to the currency managers.
 		persistentCurrencyManager = PersistentCurrencyManager.instance;
 
 		// Load the saved game state (useful for running the game directly through the main scene).
@@ -70,5 +74,9 @@ public class GameplayManager : MonoBehaviour {
 		// Update persistent currency text.
 		uiCanvas.SetPersistentCurrencyText(PersistentCurrencyManager.persistentCurrencyName,
 			persistentCurrencyManager.GetPersistentCurrency());
+
+		// Update session currency text.
+		uiCanvas.SetSessionCurrencyText(SessionCurrencyManager.sessionCurrencyName,
+			sessionCurrencyManager.GetSessionCurrency());
 	}
 }
