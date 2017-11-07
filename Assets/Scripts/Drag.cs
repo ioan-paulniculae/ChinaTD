@@ -13,6 +13,8 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     Vector3 startPosition;
     Transform startParent;
 
+	public GameplayManager gameplayManager;
+	public GameObject infoTextObject;
     public Transform towerPrefab;
     public Transform range;
 
@@ -24,6 +26,7 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     //private Tilemap highlightMap;
     //tilemap which contains sprites that can't be built on
     private Tilemap buildableTilemap;
+	private Button button;
 
     #region IBeginDragHandler implementation
 
@@ -32,11 +35,28 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         //highlightMap = GameObject.Find("HighlightMap").GetComponent<Tilemap>();
         towerMap = GameObject.Find("TowerMap").GetComponent<Tilemap>();
         buildableTilemap = GameObject.Find("BuildableMap").GetComponent<Tilemap>();
+		button = GetComponent<Button> ();
     }
 
+	private void Update() {
+		if (gameplayManager.CanAffordTower (towerPrefab.GetComponent<TowerBehaviour> ())) {
+			button.interactable = true;
+		} else {
+			button.interactable = false;
+		}
+
+		Text costText = infoTextObject.transform.Find ("Cost").GetComponent<Text>();
+		costText.text = "Cost: " + gameplayManager.GetSessionCurrencyCostForTower (towerPrefab.GetComponent<TowerBehaviour> ())
+			+ " " + SessionCurrencyManager.sessionCurrencyName;
+	}
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+		// Disallow dragging if the player can't afford the tower.
+		if (!gameplayManager.CanAffordTower (towerPrefab.GetComponent<TowerBehaviour> ())) {
+			return;
+		}
+
         startPosition = transform.position;
         startParent = transform.parent;
         range.gameObject.SetActive(true);
@@ -51,9 +71,13 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     #region IDragHandler implementation
 
     public void OnDrag(PointerEventData eventData)
-    {
-        transform.position = eventData.position;
+	{
+		// Disallow dragging if the player can't afford the tower.
+		if (!gameplayManager.CanAffordTower (towerPrefab.GetComponent<TowerBehaviour> ())) {
+			return;
+		}
 
+        transform.position = eventData.position;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         mousePos = towerMap.WorldToCell(new Vector3(ray.origin.x, ray.origin.y, 0));
@@ -93,6 +117,11 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     
     public void OnEndDrag(PointerEventData eventData)
     {
+		// Disallow dragging if the player can't afford the tower.
+		if (!gameplayManager.CanAffordTower (towerPrefab.GetComponent<TowerBehaviour> ())) {
+			return;
+		}
+
         transform.position = startPosition;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -105,6 +134,7 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
             towerMap.SetTile(mousePos, towerSprite);
             Instantiate(towerPrefab, towerMap.GetCellCenterWorld(mousePos), Quaternion.identity);
             GetComponent<Image>().color = Color.white;
+			gameplayManager.TowerBuilt (towerPrefab.GetComponent<TowerBehaviour>());
         }
         range.gameObject.SetActive(false);
 

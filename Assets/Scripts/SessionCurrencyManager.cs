@@ -22,6 +22,18 @@ public class SessionCurrencyManager : MonoBehaviour {
 		return sessionCurrency;
 	}
 
+	public void SetSessionCurrency(int currency) {
+		sessionCurrency = currency;
+	}
+
+	public bool CanAfford(int currency) {
+		return (sessionCurrency >= currency);
+	}
+
+	public void SubstractSessionCurrency(int currency) {
+		sessionCurrency -= currency;
+	}
+
 	/* Calculates if any session currency dropped from the enemy that was killed.
 	 * Also increases the amount of currency the player has.
 	 * Returns the amount of currency that was given. */

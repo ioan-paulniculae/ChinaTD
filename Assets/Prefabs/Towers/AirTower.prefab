@@ -74,6 +74,8 @@ MonoBehaviour:
   targetsAir: 1
   fireRate: 1
   projectile: {fileID: 4750120728345548, guid: 6ddf43e8069e7ae4aa2cc337fcb2d106, type: 2}
+  sessionCurrencyCost: 75
+  sessionCurrencyAdditionalCostPerTower: 10
 --- !u!212 &212017621527035118
 SpriteRenderer:
   m_ObjectHideFlags: 1

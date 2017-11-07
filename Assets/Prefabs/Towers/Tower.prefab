@@ -69,10 +69,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 5
+  type: 0
   targetsGround: 1
   targetsAir: 0
   fireRate: 1
   projectile: {fileID: 4357181965841666, guid: 933bf8026f02e97488dea67b945ff418, type: 2}
+  sessionCurrencyCost: 50
+  sessionCurrencyAdditionalCostPerTower: 5
 --- !u!212 &212797050151458596
 SpriteRenderer:
   m_ObjectHideFlags: 1

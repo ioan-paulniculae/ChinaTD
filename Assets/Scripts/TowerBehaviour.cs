@@ -19,6 +19,12 @@ public class TowerBehaviour : MonoBehaviour {
     public float fireRate;
     public Transform projectile;
 
+	/* base cost: i.e. 50 gold */
+	public int sessionCurrencyCost = 50;
+
+	/* rate at which cost grows with additional towers. i.e. 5 more gold per level (will have exponential scaling based on this) */
+	public int sessionCurrencyAdditionalCostPerTower = 10;
+
     List<GameObject> targetList = new List<GameObject>();
     float cooldown;
 	PersistentUpgradesManager persistentUpgradesManager = PersistentUpgradesManager.instance;
