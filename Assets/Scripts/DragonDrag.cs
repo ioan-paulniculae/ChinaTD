@@ -53,7 +53,7 @@ public class DragonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Instantiate(dragonPrefab, new Vector3(ray.origin.x, ray.origin.y, 0), Quaternion.identity);
-        Debug.Log(Input.mousePosition);
+
         GetComponent<Image>().color = Color.white;
 
         range.gameObject.SetActive(false);
