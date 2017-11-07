@@ -1,34 +1,43 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class DragonBehaviour : MonoBehaviour
 {
+    private Ray ray;
+    private Vector3Int mousePos;
+    private Tilemap towerMap;
+    private bool moving;
+    private Vector3 moveTarget;
+    private List<GameObject> targetList = new List<GameObject>();
+    private float cooldown;
 
     public float range;
-
+    public float speed;
+    public float fireRate;
     public bool targetsGround = true;
     public bool targetsAir = true;
-
-    public float fireRate;
     public Transform projectile;
 
-    List<GameObject> targetList = new List<GameObject>();
-    float cooldown;
+
 
     public float duration = 10;
 
     // Use this for initialization
     void Start()
     {
+        moving = false;
         gameObject.GetComponent<CircleCollider2D>().radius = range;
         cooldown = 0;
         targetList = new List<GameObject>();
+        towerMap = GameObject.Find("TowerMap").GetComponent<Tilemap>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        MoveBehaviour();
 
         if (targetList.Count > 0)
             while (targetList[targetList.Count - 1] == null)
@@ -40,21 +49,61 @@ public class DragonBehaviour : MonoBehaviour
         {
             cooldown -= Time.deltaTime;
         }
-        else if (targetList.Count > 0)
+        else if (targetList.Count > 0 && !moving)
         {
+            moveTarget = targetList[0].transform.position;
+            LookAtTarget();
             cooldown = fireRate;
             Transform proj = Instantiate(projectile, gameObject.transform.position, Quaternion.identity);
             proj.GetComponent<ProjectileBehaviour>().target = targetList[0].transform;
             //shoot at first member of targetlist   
         }
 
-        if (duration > 0)
-        {
-            duration -= Time.deltaTime;
-        }
-        else
+        duration -= Time.deltaTime;
+        if (duration <= 0)
         {
             Destroy(gameObject);
+        }
+    }
+
+    private void MoveBehaviour()
+    {
+        if (Input.GetKeyUp("mouse 0"))
+        {
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            mousePos = towerMap.WorldToCell(new Vector3(ray.origin.x, ray.origin.y, 0));
+
+            if (!towerMap.HasTile(mousePos))
+            {
+                moving = true;
+                moveTarget = new Vector3(ray.origin.x, ray.origin.y, 0);
+            }
+        }
+
+        if (moving)
+        {
+            LookAtTarget();
+            MoveTowardsTarget();
+        }
+    }
+
+    private void LookAtTarget()
+    {
+        Vector3 direction = moveTarget - transform.position;
+        float rotationZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationZ);
+        
+    }
+
+    private void MoveTowardsTarget()
+    {
+        if (moveTarget != null)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, moveTarget, speed * Time.deltaTime);
+        }
+        if (transform.position == moveTarget)
+        {
+            moving = false;
         }
     }
 

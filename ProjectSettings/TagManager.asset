@@ -49,11 +49,11 @@ TagManager:
   - name: Environment
     uniqueID: 920443065
     locked: 0
-  - name: Tower
-    uniqueID: 2825914757
-    locked: 0
   - name: Enemies
     uniqueID: 3247479409
+    locked: 0
+  - name: Tower
+    uniqueID: 2825914757
     locked: 0
   - name: Highlight
     uniqueID: 3564893015
