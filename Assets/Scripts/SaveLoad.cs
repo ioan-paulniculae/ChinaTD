@@ -11,7 +11,7 @@ public static class SaveLoad {
     public static string saveName = "/savedGame.gd";
 
 	public static void Save() {
-		GameState newState = new GameState (persistentCurrencyManager.GetPersistentCurrency (), persistentUpgradesManager.GetPersistentUpgrades());
+		GameState newState = new GameState (persistentCurrencyManager.GetPersistentCurrency (), persistentUpgradesManager.GetPersistentUpgrades(), persistentUpgradesManager.GetActiveAura());
 		BinaryFormatter bf = new BinaryFormatter ();
 		FileStream file = File.Create (Application.persistentDataPath + saveName);
 		bf.Serialize (file, newState);
@@ -25,6 +25,7 @@ public static class SaveLoad {
 			GameState gameState = (GameState)bf.Deserialize(file);
 			persistentCurrencyManager.SetPersistentCurrency(gameState.persistentCurrency);
             persistentUpgradesManager.SetPersistentUpgrades(gameState.persistentUpgrades);
+			persistentUpgradesManager.SetActiveAura (gameState.activeAura);
 			file.Close();
 		}
 	}

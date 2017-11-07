@@ -9,6 +9,7 @@ public class PersistentUpgradesManager {
 
 	private List<PersistentUpgradeSerializable> purchasedPersistentUpgrades = new List<PersistentUpgradeSerializable>();
 	private List<PersistentUpgrade> persistentUpgradesList = PersistentUpgradeList.upgrades;
+	private UpgradeType activeAura = UpgradeType.DRAGON_NO_AURA;
 
     public static PersistentUpgradesManager instance
     {
@@ -82,6 +83,15 @@ public class PersistentUpgradesManager {
 
 		// Save new state.
 		UpdatePurchasedPersistentUpgrades(upgrade.info.type, upgrade.info.level);
+		SaveLoad.Save ();
+	}
+
+	public UpgradeType GetActiveAura() {
+		return activeAura;
+	}
+
+	public void SetActiveAura(UpgradeType auraType) {
+		activeAura = auraType;
 		SaveLoad.Save ();
 	}
 }
