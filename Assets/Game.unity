@@ -6109,7 +6109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cooldown: 15
   duration: 10
-  dragonPrefab: {fileID: 4554811638856866, guid: f263037a8db88804da9722a786055bdc,
+  dragonPrefab: {fileID: 4646289774320104, guid: f263037a8db88804da9722a786055bdc,
     type: 2}
   range: {fileID: 1568768888}
   fillImage: {fileID: 605618417}
