@@ -765,8 +765,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 438997098}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 430.5, y: 178, z: 0}
-  m_LocalScale: {x: 0.5933333, y: 0.5933333, z: 0.5933333}
+  m_LocalPosition: {x: 430.5, y: 182, z: 0}
+  m_LocalScale: {x: 0.6066667, y: 0.6066667, z: 0.6066667}
   m_Children:
   - {fileID: 472436950}
   - {fileID: 2134717109}
@@ -5636,7 +5636,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1469052539
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_MaxChunkCount: 16
