@@ -14,7 +14,7 @@ public static class PersistentUpgradeList {
             null,
             5,			/* base diamonds cost */
             2,			/* diamonds cost increase per level */
-			0.05f,		/* base effect (0.05 is 5%) */
+			0.00f,		/* base effect (0.05 is 5%) */
 			0.01f,      /* effect increment (0.01 is an additional 1% per level) */
             "Damage"
         ),
@@ -25,7 +25,7 @@ public static class PersistentUpgradeList {
             null,
 			5,			/* base diamonds cost */
 			2,			/* diamonds cost increase per level */
-			0.05f,		/* base effect (0.05 is 5%) */
+			0.00f,		/* base effect (0.05 is 5%) */
 			0.01f,      /* effect increment (0.01 is an additional 1% per level) */
             "Attack Speed"
         ),
@@ -36,7 +36,7 @@ public static class PersistentUpgradeList {
             null,
 			5,			/* base diamonds cost */
 			2,			/* diamonds cost increase per level */
-			0.05f,		/* base effect (0.05 is 5%) */
+			0.00f,		/* base effect (0.05 is 5%) */
 			0.01f,      /* effect increment (0.01 is an additional 1% per level) */
             "Range"
         ),
@@ -49,7 +49,7 @@ public static class PersistentUpgradeList {
 			null,
 			5,			/* base diamonds cost */
 			2,			/* diamonds cost increase per level */
-			0.05f,		/* base effect (0.05 is 5%) */
+			0.00f,		/* base effect (0.05 is 5%) */
 			0.01f,      /* effect increment (0.01 is an additional 1% per level) */
 			"Damage"
 		),
@@ -60,7 +60,7 @@ public static class PersistentUpgradeList {
 			null,
 			5,			/* base diamonds cost */
 			2,			/* diamonds cost increase per level */
-			0.05f,		/* base effect (0.05 is 5%) */
+			0.00f,		/* base effect (0.05 is 5%) */
 			0.01f,      /* effect increment (0.01 is an additional 1% per level) */
 			"Attack Speed"
 		),
@@ -71,7 +71,7 @@ public static class PersistentUpgradeList {
 			null,
 			5,			/* base diamonds cost */
 			2,			/* diamonds cost increase per level */
-			0.05f,		/* base effect (0.05 is 5%) */
+			0.00f,		/* base effect (0.05 is 5%) */
 			0.01f,      /* effect increment (0.01 is an additional 1% per level) */
 			"Range"
 		),
@@ -84,7 +84,7 @@ public static class PersistentUpgradeList {
 			null,
 			5,			/* base diamonds cost */
 			2,			/* diamonds cost increase per level */
-			0.05f,		/* base effect (0.05 is 5%) */
+			0.00f,		/* base effect (0.05 is 5%) */
 			0.01f,      /* effect increment (0.01 is an additional 1% per level) */
 			"Damage"
 		),
@@ -95,7 +95,7 @@ public static class PersistentUpgradeList {
 			null,
 			5,			/* base diamonds cost */
 			2,			/* diamonds cost increase per level */
-			0.05f,		/* base effect (0.05 is 5%) */
+			0.00f,		/* base effect (0.05 is 5%) */
 			0.01f,      /* effect increment (0.01 is an additional 1% per level) */
 			"Attack Speed"
 		),
@@ -106,7 +106,7 @@ public static class PersistentUpgradeList {
 			null,
 			5,			/* base diamonds cost */
 			2,			/* diamonds cost increase per level */
-			0.05f,		/* base effect (0.05 is 5%) */
+			0.00f,		/* base effect (0.05 is 5%) */
 			0.01f,      /* effect increment (0.01 is an additional 1% per level) */
 			"Range"
 		),
@@ -119,7 +119,7 @@ public static class PersistentUpgradeList {
 			null,
 			5,			/* base diamonds cost */
 			2,			/* diamonds cost increase per level */
-			0.05f,		/* base effect (0.05 is 5%) */
+			0.00f,		/* base effect (0.05 is 5%) */
 			0.01f,      /* effect increment (0.01 is an additional 1% per level) */
 			"Damage to nearby towers"
 		),
@@ -130,7 +130,7 @@ public static class PersistentUpgradeList {
 			null,
 			5,			/* base diamonds cost */
 			2,			/* diamonds cost increase per level */
-			0.05f,		/* base effect (0.05 is 5%) */
+			0.00f,		/* base effect (0.05 is 5%) */
 			0.01f,      /* effect increment (0.01 is an additional 1% per level) */
 			"Attack Speed to nearby towers"
 		),
@@ -141,7 +141,7 @@ public static class PersistentUpgradeList {
 			null,
 			5,			/* base diamonds cost */
 			2,			/* diamonds cost increase per level */
-			0.05f,		/* base effect (0.05 is 5%) */
+			0.00f,		/* base effect (0.05 is 5%) */
 			0.01f,      /* effect increment (0.01 is an additional 1% per level) */
 			"Range to nearby towers"
 		),

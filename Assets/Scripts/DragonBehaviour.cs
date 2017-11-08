@@ -81,7 +81,30 @@ public class DragonBehaviour : MonoBehaviour
         {
             Destroy(gameObject);
         }
+			
+		/* Apply aura to nearby towers. */
+		if (HasAura ()) {
+			List<TowerBehaviour> allTowers = gameplayManager.GetTowers ();
+			foreach (TowerBehaviour tower in allTowers) {
+				if (Vector3.Distance (transform.position, tower.transform.position) <= range) {
+					tower.ChangeColor (GetAuraColor ());
+					tower.ApplyAura (GetActiveAura ());
+				} else {
+					tower.RemoveAura (GetActiveAura ());
+				}
+			}
+		}
     }
+
+	void OnDestroy() {
+		// Remove aura from nearby towers.
+		if (HasAura ()) {
+			List<TowerBehaviour> allTowers = gameplayManager.GetTowers ();
+			foreach (TowerBehaviour tower in allTowers) {
+				tower.RemoveAura (GetActiveAura ());
+			}
+		}
+	}
     
 	private void ChangeScale(int scale) {
 		renderObject.transform.localScale = new Vector3 (scale, scale, 1.0f);
@@ -91,24 +114,35 @@ public class DragonBehaviour : MonoBehaviour
 		renderObject.GetComponent<SpriteRenderer> ().color = newColor;
 	}
 
+	private bool HasAura() {
+		return (persistentUpgradesManager.GetActiveAuraType () != UpgradeType.DRAGON_NO_AURA);
+	}
+
+	private PersistentUpgrade GetActiveAura() {
+		return persistentUpgradesManager.GetActiveAura ();
+	}
+
+	private Color GetAuraColor() {
+		switch (persistentUpgradesManager.GetActiveAuraType ()) {
+		case UpgradeType.DRAGON_DAMAGE_AURA:
+			return damageAuraColor;
+		case UpgradeType.DRAGON_ATTACKSPEED_AURA:
+			return attackSpeedAuraColor;
+		case UpgradeType.DRAGON_RANGE_AURA:
+			return rangeAuraColor;
+		}
+
+		// Fallback value.
+		return Color.white;
+	}
+
 	private void ApplyAura() {
-		if (persistentUpgradesManager.GetActiveAuraType () != UpgradeType.DRAGON_NO_AURA) {
+		if (HasAura()) {
 			// Change dragon's scale.
 			ChangeScale(5);
 
 			// Change dragon's color.
-			PersistentUpgrade activeAura = persistentUpgradesManager.GetActiveAura ();
-			switch (activeAura.info.type) {
-			case UpgradeType.DRAGON_DAMAGE_AURA:
-				ChangeColor(damageAuraColor);
-				break;
-			case UpgradeType.DRAGON_ATTACKSPEED_AURA:
-				ChangeColor(attackSpeedAuraColor);
-				break;
-			case UpgradeType.DRAGON_RANGE_AURA:
-				ChangeColor(rangeAuraColor);
-				break;
-			}
+			ChangeColor (GetAuraColor ());
 		}
 	}
 

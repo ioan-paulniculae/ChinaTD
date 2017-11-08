@@ -14,8 +14,9 @@ public class GameplayManager : MonoBehaviour {
 	private bool buildModeEnabled = false;
 	private PersistentCurrencyManager persistentCurrencyManager;
 
-	/* Keeps track of currently active towers. */
+	/* Keeps track of number of active towers. */
 	private Dictionary<TowerType, int> towersBuilt = new Dictionary<TowerType, int>();
+	private List<TowerBehaviour> allTowers = new List<TowerBehaviour>();
 
 	public bool getBuildModeEnabled() {
 		return buildModeEnabled;
@@ -52,9 +53,25 @@ public class GameplayManager : MonoBehaviour {
 		// Update session currency.
 		sessionCurrencyManager.SubstractSessionCurrency(GetSessionCurrencyCostForTower(tower));
 
+		// Update list of towers.
+		allTowers.Add(tower);
+
+		// Update number of active towers.
 		int oldValue;
 		towersBuilt.TryGetValue (tower.type, out oldValue);
 		towersBuilt [tower.type] = oldValue + 1;
+	}
+
+	public void TowerDestroyed(TowerBehaviour tower) {
+		// Update list of towers.
+		allTowers.Remove(tower);
+
+		// Update number of active towers.
+		towersBuilt[tower.type] -= 1;
+	}
+
+	public List<TowerBehaviour> GetTowers() {
+		return allTowers;
 	}
 
 	public void DragonBuilt(int cost) {

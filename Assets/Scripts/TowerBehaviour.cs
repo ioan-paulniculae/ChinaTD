@@ -28,6 +28,8 @@ public class TowerBehaviour : MonoBehaviour {
     List<GameObject> targetList = new List<GameObject>();
     float cooldown;
 	PersistentUpgradesManager persistentUpgradesManager = PersistentUpgradesManager.instance;
+	bool hasAura;
+	float damageMultiplier = 1.0f;	// this is used when instantiating projectiles.
 
     // Use this for initialization
     void Start () {
@@ -55,9 +57,60 @@ public class TowerBehaviour : MonoBehaviour {
             cooldown = fireRate;
             Transform proj = Instantiate(projectile, gameObject.transform.position, Quaternion.identity);
             proj.GetComponent<ProjectileBehaviour>().target = targetList[0].transform;
+			proj.GetComponent<ProjectileBehaviour> ().damage *= damageMultiplier;
             //shoot at first member of targetlist   
         }
     }
+
+	public void ChangeColor(Color newColor) {
+		SpriteRenderer renderer = GetComponent<SpriteRenderer> ();
+		renderer.color = newColor;
+	}
+
+	public void ApplyAura(PersistentUpgrade aura) {
+		if (hasAura) {
+			return;
+		}
+
+		hasAura = true;
+		UpgradeType type = aura.info.type;
+		float effect = aura.GetCurrentEffect ();
+
+		switch (type) {
+		case UpgradeType.DRAGON_DAMAGE_AURA:
+			ApplyDamageUpgrade (effect, true);
+			break;
+		case UpgradeType.DRAGON_ATTACKSPEED_AURA:
+			ApplyAttackSpeedUpgrade (effect, true);
+			break;
+		case UpgradeType.DRAGON_RANGE_AURA:
+			ApplyRangeUpgrade (effect, true);
+			break;
+		}
+	}
+
+	public void RemoveAura(PersistentUpgrade aura) {
+		if (!hasAura) {
+			return;
+		}
+
+		hasAura = false;
+		ChangeColor (Color.white);
+		UpgradeType type = aura.info.type;
+		float effect = aura.GetCurrentEffect ();
+
+		switch (type) {
+		case UpgradeType.DRAGON_DAMAGE_AURA:
+			ApplyDamageUpgrade (effect, false);
+			break;
+		case UpgradeType.DRAGON_ATTACKSPEED_AURA:
+			ApplyAttackSpeedUpgrade (effect, false);
+			break;
+		case UpgradeType.DRAGON_RANGE_AURA:
+			ApplyRangeUpgrade (effect, false);
+			break;
+		}
+	}
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -128,21 +181,32 @@ public class TowerBehaviour : MonoBehaviour {
 	}
 
 	private void ApplyPersistentUpgrades() {
-		ApplyDamageUpgrade ();
-		ApplyAttackSpeedUpgrade ();
-		ApplyRangeUpgrade ();
+		ApplyDamageUpgrade (GetDamageUpgradeEffect(), true);
+		ApplyAttackSpeedUpgrade (GetAttackSpeedUpgradeEffect(), true);
+		ApplyRangeUpgrade (GetRangeUpgradeEffect(), true);
 	}
 
-	private void ApplyDamageUpgrade() {
-		ProjectileBehaviour projectileBehaviour = projectile.GetComponent<ProjectileBehaviour> ();
-		projectileBehaviour.damage *= (1 + GetDamageUpgradeEffect ());
+	private void ApplyDamageUpgrade(float effect, bool increase) {
+		if (increase) {
+			damageMultiplier *= (1 + effect);
+		} else {
+			damageMultiplier /= (1 + effect);
+		}
 	}
 
-	private void ApplyAttackSpeedUpgrade() {
-		fireRate /= (1 + GetAttackSpeedUpgradeEffect ());
+	private void ApplyAttackSpeedUpgrade(float effect, bool increase) {
+		if (increase) {
+			fireRate /= (1 + effect);
+		} else {
+			fireRate *= (1 + effect);
+		}
 	}
 
-	private void ApplyRangeUpgrade() {
-		range *= (1 + GetRangeUpgradeEffect ());
+	private void ApplyRangeUpgrade(float effect, bool increase) {
+		if (increase) {
+			range *= (1 + effect);
+		} else {
+			range /= (1 + effect);
+		}
 	}
 }

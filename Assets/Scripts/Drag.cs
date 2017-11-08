@@ -132,9 +132,9 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         {
 
             towerMap.SetTile(mousePos, towerSprite);
-            Instantiate(towerPrefab, towerMap.GetCellCenterWorld(mousePos), Quaternion.identity);
+            Transform newTower = Instantiate(towerPrefab, towerMap.GetCellCenterWorld(mousePos), Quaternion.identity);
             GetComponent<Image>().color = Color.white;
-			gameplayManager.TowerBuilt (towerPrefab.GetComponent<TowerBehaviour>());
+			gameplayManager.TowerBuilt (newTower.GetComponent<TowerBehaviour>());
         }
         range.gameObject.SetActive(false);
 
