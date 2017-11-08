@@ -228,6 +228,9 @@ MonoBehaviour:
   targetsAir: 1
   projectile: {fileID: 4750120728345548, guid: 2fbb2d08cdc4bfd49bf6b93bd77a306d, type: 2}
   maxDuration: 10
+  damageAuraColor: {r: 1, g: 0, b: 0, a: 1}
+  attackSpeedAuraColor: {r: 0.986207, g: 1, b: 0, a: 1}
+  rangeAuraColor: {r: 0, g: 1, b: 0.33793092, a: 1}
 --- !u!114 &114334409040626616
 MonoBehaviour:
   m_ObjectHideFlags: 1

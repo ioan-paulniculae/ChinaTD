@@ -12,7 +12,7 @@ public class AuraActivationButton : MonoBehaviour {
 	Button button;
 
 	void RedrawButtonState() {
-		if (persistentUpgradesManager.GetActiveAura () == auraType) {
+		if (persistentUpgradesManager.GetActiveAuraType () == auraType) {
 			button.interactable = false;
 			textTransform.GetComponent<Text> ().text = "Active";
 		} else if (persistentUpgradesManager.GetUpgrade (auraType).info.level == 0) {
@@ -37,6 +37,6 @@ public class AuraActivationButton : MonoBehaviour {
 	}
 
 	void OnClick() {
-		persistentUpgradesManager.SetActiveAura (auraType);
+		persistentUpgradesManager.SetActiveAuraTypeAndSave (auraType);
 	}
 }

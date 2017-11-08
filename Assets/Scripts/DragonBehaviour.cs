@@ -19,12 +19,19 @@ public class DragonBehaviour : MonoBehaviour
     public bool targetsGround = true;
     public bool targetsAir = true;
     public Transform projectile;
-
     public float maxDuration = 10;
+
+	[Header("Aura Effects")]
+	public Color damageAuraColor;
+	public Color attackSpeedAuraColor;
+	public Color rangeAuraColor;
+
     private float duration;
 
     private HealthBarController healthBar;
     private GameplayManager gameplayManager;
+	private PersistentUpgradesManager persistentUpgradesManager = PersistentUpgradesManager.instance;
+	private GameObject renderObject;
 
     // Use this for initialization
     void Start()
@@ -38,6 +45,9 @@ public class DragonBehaviour : MonoBehaviour
         duration = maxDuration;
         healthBar = gameObject.GetComponentInChildren<HealthBarController>();
         gameplayManager = FindObjectOfType<GameplayManager>();
+		renderObject = transform.Find ("RenderObject").gameObject;
+
+		ApplyAura ();
     }
 
     // Update is called once per frame
@@ -73,6 +83,35 @@ public class DragonBehaviour : MonoBehaviour
         }
     }
     
+	private void ChangeScale(int scale) {
+		renderObject.transform.localScale = new Vector3 (scale, scale, 1.0f);
+	}
+
+	private void ChangeColor(Color newColor) {
+		renderObject.GetComponent<SpriteRenderer> ().color = newColor;
+	}
+
+	private void ApplyAura() {
+		if (persistentUpgradesManager.GetActiveAuraType () != UpgradeType.DRAGON_NO_AURA) {
+			// Change dragon's scale.
+			ChangeScale(5);
+
+			// Change dragon's color.
+			PersistentUpgrade activeAura = persistentUpgradesManager.GetActiveAura ();
+			switch (activeAura.info.type) {
+			case UpgradeType.DRAGON_DAMAGE_AURA:
+				ChangeColor(damageAuraColor);
+				break;
+			case UpgradeType.DRAGON_ATTACKSPEED_AURA:
+				ChangeColor(attackSpeedAuraColor);
+				break;
+			case UpgradeType.DRAGON_RANGE_AURA:
+				ChangeColor(rangeAuraColor);
+				break;
+			}
+		}
+	}
+
     private void UpdateHealthBar()
     {
         duration -= Time.deltaTime;

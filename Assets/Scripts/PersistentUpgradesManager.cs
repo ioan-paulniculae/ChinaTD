@@ -86,11 +86,19 @@ public class PersistentUpgradesManager {
 		SaveLoad.Save ();
 	}
 
-	public UpgradeType GetActiveAura() {
+	public UpgradeType GetActiveAuraType() {
 		return activeAura;
 	}
 
-	public void SetActiveAura(UpgradeType auraType) {
+	public PersistentUpgrade GetActiveAura() {
+		return GetUpgrade (activeAura);
+	}
+
+	public void SetActiveAuraType(UpgradeType auraType) {
+		activeAura = auraType;
+	}
+
+	public void SetActiveAuraTypeAndSave(UpgradeType auraType) {
 		activeAura = auraType;
 		SaveLoad.Save ();
 	}
