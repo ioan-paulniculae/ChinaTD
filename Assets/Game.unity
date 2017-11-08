@@ -1502,6 +1502,11 @@ Prefab:
       propertyPath: m_Name
       value: EnemySpawner
       objectReference: {fileID: 0}
+    - target: {fileID: 114426425641854454, guid: 5ca4a05de4e68144fabf31bab017305f,
+        type: 2}
+      propertyPath: gameplayManager
+      value: 
+      objectReference: {fileID: 828938333}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5ca4a05de4e68144fabf31bab017305f, type: 2}
   m_IsPrefabParent: 0
@@ -3292,6 +3297,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerLives: 30
   startingSessionCurrency: 200
+  difficultyScalingFactor: 0.05
   uiCanvas: {fileID: 438997099}
   sessionCurrencyManager: {fileID: 1569169010}
 --- !u!224 &828938334
