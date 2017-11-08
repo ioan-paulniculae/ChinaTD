@@ -57,6 +57,20 @@ public class GameplayManager : MonoBehaviour {
 		towersBuilt [tower.type] = oldValue + 1;
 	}
 
+	public void DragonBuilt(int cost) {
+		// Update session currency.
+		sessionCurrencyManager.SubstractSessionCurrency(cost);
+	}
+
+	public bool CanAfford(int cost) {
+		return sessionCurrencyManager.CanAfford(cost);
+	}
+
+	public int GetSessionCurrencyCostForDragon(int baseCost) {
+		// TODO: scale this with difficulty?
+		return baseCost;
+	}
+
 	public int GetSessionCurrencyCostForTower(TowerBehaviour tower) {
 		// Based on the tower's base cost and the number of towers, returns the currency cost.
 		int towersCount;

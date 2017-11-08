@@ -6,10 +6,13 @@ using UnityEngine.Tilemaps;
 
 public class DragonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+	public int sessionCurrencyCost = 500;
     public float cooldown = 15;
     public float duration = 10;
     private float cooldownTimer;
 
+	public GameplayManager gameplayManager;
+	public GameObject infoTextObject;
     public static GameObject itemBeingDragged;
     Vector3 startPosition;
     Transform startParent;
@@ -17,6 +20,7 @@ public class DragonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public Transform dragonPrefab;
     public Transform range;
     public Image fillImage;
+	private Button button;
 
     #region IBeginDragHandler implementation
 
@@ -24,6 +28,7 @@ public class DragonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     {
         dragonPrefab.GetComponent<DragonBehaviour>().maxDuration = duration;
         cooldownTimer = 0;
+		button = GetComponent<Button> ();
     }
 
     private void Update()
@@ -34,11 +39,24 @@ public class DragonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         }
         fillImage.fillAmount = cooldownTimer / cooldown;
 
+		if (CanAffordDragon()) {
+			button.interactable = true;
+		} else {
+			button.interactable = false;
+		}
+
+		Text costText = infoTextObject.transform.Find ("Cost").GetComponent<Text>();
+		costText.text = "Cost: " + gameplayManager.GetSessionCurrencyCostForDragon (sessionCurrencyCost)
+			+ " " + SessionCurrencyManager.sessionCurrencyName;
     }
+
+	private bool CanAffordDragon() {
+		return gameplayManager.CanAfford (gameplayManager.GetSessionCurrencyCostForDragon (sessionCurrencyCost));
+	}
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (cooldownTimer > 0)
+		if (cooldownTimer > 0 || !CanAffordDragon())
             return;
 
         startPosition = transform.position;
@@ -52,7 +70,7 @@ public class DragonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (cooldownTimer > 0)
+		if (cooldownTimer > 0 || !CanAffordDragon())
             return;
 
         transform.position = eventData.position;
@@ -69,13 +87,14 @@ public class DragonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (cooldownTimer > 0)
+		if (cooldownTimer > 0 || !CanAffordDragon())
             return;
 
         transform.position = startPosition;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Instantiate(dragonPrefab, new Vector3(ray.origin.x, ray.origin.y, 0), Quaternion.identity);
+		gameplayManager.DragonBuilt(sessionCurrencyCost);
 
         GetComponent<Image>().color = Color.white;
 
