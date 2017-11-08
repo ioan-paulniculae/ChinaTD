@@ -27,10 +27,15 @@ public class EnemyStats : MonoBehaviour {
 		maxHealth = health;
 		healthBar = gameObject.GetComponentInChildren<HealthBarController> ();
 		gameplayManager = FindObjectOfType<GameplayManager> ();
+		ApplyDifficultyMultiplier ();
 	}
 		
 	void OnDestroy() {
 		
+	}
+
+	public void ApplyDifficultyMultiplier() {
+		health *= gameplayManager.GetCurrentDifficultyMultiplier ();
 	}
 
 	private void UpdateHealthBar() {

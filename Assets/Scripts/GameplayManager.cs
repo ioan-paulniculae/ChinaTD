@@ -7,9 +7,11 @@ public class GameplayManager : MonoBehaviour {
 
 	public int playerLives = 30;
 	public int startingSessionCurrency = 200;
+	public float difficultyScalingFactor = 0.05f;  /* coefficient for calculating difficulty increase. */
 	public UserInterfaceController uiCanvas;
 	public SessionCurrencyManager sessionCurrencyManager;
 
+	private int waveNumber = 0;
 	private BuildableTile[] buildableTiles;
 	private bool buildModeEnabled = false;
 	private PersistentCurrencyManager persistentCurrencyManager;
@@ -83,9 +85,12 @@ public class GameplayManager : MonoBehaviour {
 		return sessionCurrencyManager.CanAfford(cost);
 	}
 
+	public void WaveSpawned() {
+		waveNumber += 1;
+	}
+
 	public int GetSessionCurrencyCostForDragon(int baseCost) {
-		// TODO: scale this with difficulty?
-		return baseCost;
+		return (int)(baseCost * GetCurrentDifficultyMultiplier());
 	}
 
 	public int GetSessionCurrencyCostForTower(TowerBehaviour tower) {
@@ -99,6 +104,11 @@ public class GameplayManager : MonoBehaviour {
 
 	public bool CanAffordTower(TowerBehaviour tower) {
 		return sessionCurrencyManager.CanAfford (GetSessionCurrencyCostForTower (tower));
+	}
+
+	public float GetCurrentDifficultyMultiplier() {
+		/* TODO: maybe change this formula to something exponential? */
+		return (1 + waveNumber * difficultyScalingFactor);
 	}
 
 	private void GameOver() {

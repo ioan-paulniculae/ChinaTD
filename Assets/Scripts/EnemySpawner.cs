@@ -31,6 +31,7 @@ public class EnemySpawner : MonoBehaviour {
 		public int maxGroupNumber;
 	}
 
+	public GameplayManager gameplayManager;
 	public UserInterfaceController uiCanvas;
 	public EnemyPrefabEntry[] enemyPrefabEntries;
 	public GameObject[] spawners;
@@ -149,6 +150,7 @@ public class EnemySpawner : MonoBehaviour {
 		currentWave = nextWave;
 		uiCanvas.UpdateCurrentWaveText (currentWave);
 		uiCanvas.HideNextWaveTypeText ();
+		gameplayManager.WaveSpawned ();
 
 		/* Spawn the next wave. */
 		StartCoroutine (SpawnEnemyRoutine (currentWave));
