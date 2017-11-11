@@ -38,6 +38,7 @@ public class TowerBehaviour : MonoBehaviour {
         targetList = new List<GameObject>();
 		ApplyPersistentUpgrades ();
     }
+
 	
 	// Update is called once per frame
 	void Update () {

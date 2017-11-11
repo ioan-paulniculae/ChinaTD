@@ -31,31 +31,28 @@ public class EnemyShooterController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        target = null;
     }
 
     // Update is called once per frame
     void Update()
     {
-        shooting = (Vector3.Distance(transform.position, target.transform.position) <= range);
-
-        if (cooldown > 0)
-        {
-            cooldown -= Time.deltaTime;
-        } else if( shooting )
-		{
-			Transform proj = Instantiate(projectile, gameObject.transform.position, Quaternion.identity);
-			proj.GetComponent<ProjectileBehaviour>().target = target;
-			cooldown = shootingRate;
-		}
-
         if (target == null)
         {
             target = baseTarget;
             shooting = false;
         }
+        shooting = (Vector3.Distance(transform.position, target.transform.position) <= range);
 
-        if(!shooting)
+        if (cooldown > 0)
+        {
+            cooldown -= Time.deltaTime;
+        } else if( shooting && target != baseTarget)
+		{
+			Transform proj = Instantiate(projectile, gameObject.transform.position, Quaternion.identity);
+			proj.GetComponent<ProjectileBehaviour>().target = target;
+			cooldown = shootingRate;
+		} else
         {
             moveTowardsTarget();
             lookAtTarget();
