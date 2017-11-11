@@ -26,7 +26,7 @@ public class Detector : MonoBehaviour {
             if (distance < minDistance)
             {
                 shooter.GetComponent<EnemyShooterController>().target = collision.transform;
-                minDistance = distance;
+                minDistance = 100;
             }
         }
     }

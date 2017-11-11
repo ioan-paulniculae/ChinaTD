@@ -16,13 +16,51 @@ public class ObjectiveController : MonoBehaviour {
 		
 	}
 
-	void OnCollisionEnter2D(Collision2D coll) {
-		if (coll.gameObject.tag == "Enemy" || coll.gameObject.tag == "AirEnemy") {
-			GameObject enemyObject = coll.gameObject;
-			EnemyStats enemyStats = enemyObject.GetComponent<EnemyStats> ();
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "ShooterEnemy")
+        {
+            EnemyShooterController controller = collision.gameObject.GetComponent<EnemyShooterController>();
+            if (controller.target == controller.baseTarget)
+            {
+                GameObject enemyObject = collision.gameObject;
+                EnemyStats enemyStats = enemyObject.GetComponent<EnemyStats>();
 
-			gameplayManager.substractLives (enemyStats.livesCost);
-			Object.Destroy (enemyObject);
-		}
-	}
+                gameplayManager.substractLives(enemyStats.livesCost);
+                Object.Destroy(enemyObject);
+            }
+        }
+        else if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "AirEnemy")
+        {
+            GameObject enemyObject = collision.gameObject;
+            EnemyStats enemyStats = enemyObject.GetComponent<EnemyStats>();
+
+            gameplayManager.substractLives(enemyStats.livesCost);
+            Object.Destroy(enemyObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "ShooterEnemy")
+        {
+            EnemyShooterController controller = collision.gameObject.GetComponent<EnemyShooterController>();
+            if (controller.target == controller.baseTarget)
+            {
+                GameObject enemyObject = collision.gameObject;
+                EnemyStats enemyStats = enemyObject.GetComponent<EnemyStats>();
+
+                gameplayManager.substractLives(enemyStats.livesCost);
+                Object.Destroy(enemyObject);
+            }
+        }
+        else if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "AirEnemy")
+        {
+            GameObject enemyObject = collision.gameObject;
+            EnemyStats enemyStats = enemyObject.GetComponent<EnemyStats>();
+
+            gameplayManager.substractLives(enemyStats.livesCost);
+            Object.Destroy(enemyObject);
+        }
+    }
 }
