@@ -69,7 +69,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+<<<<<<< HEAD
   speed: 4
+=======
+  speed: 6
+>>>>>>> 0af27f41d4b7c9fc153c620c4ea5f82f39abba7a
   damage: 2
   targetsGround: 1
   targetsAir: 0

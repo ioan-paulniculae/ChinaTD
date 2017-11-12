@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour {
 
-	public enum EnemyType {
+	public enum WaveType {
 		GROUND,
 		SWARM,
 		FLYING,
@@ -21,11 +21,17 @@ public class EnemySpawner : MonoBehaviour {
 		EnemyWaveModifierType.SWARMING, EnemyWaveModifierType.HARDENED, EnemyWaveModifierType.AGILE};
 
 	[System.Serializable]
-	public class EnemyPrefabEntry
+	public class EnemyGroup
 	{
-		public EnemyType enemyType;
-		public EnemyMovementController enemyPrefab;
+		public EnemyBaseController enemyPrefab;
 		public int groupSize;
+	}
+
+	[System.Serializable]
+	public class WavePrefabEntry
+	{
+		public WaveType waveType;
+		public List<EnemyGroup> enemyGroups;
 		public float timeBetweenGroups;
 		public int minGroupNumber;
 		public int maxGroupNumber;
@@ -33,7 +39,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	public GameplayManager gameplayManager;
 	public UserInterfaceController uiCanvas;
-	public EnemyPrefabEntry[] enemyPrefabEntries;
+	public WavePrefabEntry[] wavePrefabEntries;
 	public GameObject[] spawners;
 
 	[Header("Wave Timers")]
@@ -73,9 +79,9 @@ public class EnemySpawner : MonoBehaviour {
 		spawnTimer = 0.0f;
 	}
 		
-	EnemyPrefabEntry GetEnemyPrefabEntryForWave(EnemyWave wave) {
-		foreach(EnemyPrefabEntry entry in enemyPrefabEntries) {
-			if (entry.enemyType == wave.enemyType) {
+	WavePrefabEntry GetEnemyPrefabEntryForWave(EnemyWave wave) {
+		foreach(WavePrefabEntry entry in wavePrefabEntries) {
+			if (entry.waveType == wave.waveType) {
 				return entry;
 			}
 		}
@@ -93,7 +99,7 @@ public class EnemySpawner : MonoBehaviour {
 			presetEnemyWaves.RemoveAt (0);
 		} else {
 			/* Generate a random wave. */
-			EnemyPrefabEntry randomEntry = enemyPrefabEntries[Random.Range(0, enemyPrefabEntries.Length)];
+			WavePrefabEntry randomEntry = wavePrefabEntries[Random.Range(0, wavePrefabEntries.Length)];
 			int groupCount = Random.Range (randomEntry.minGroupNumber, randomEntry.maxGroupNumber + 1);
 			EnemyWaveModifierType modifierType = EnemyWaveModifierType.NONE;
 
@@ -106,31 +112,33 @@ public class EnemySpawner : MonoBehaviour {
 				modifierType = modifierTypes [randomIndex];
 			}
 
-			newWave = new EnemyWave (randomEntry.enemyType, groupCount, modifierType);
+			newWave = new EnemyWave (randomEntry.waveType, groupCount, modifierType);
 		}
 
 		return newWave;
 	}
 
 	/* Spawns a group of enemies and sets their waypoints. */
-	void SpawnEnemyGroup(EnemyPrefabEntry enemyPrefabEntry, EnemyWaveModifierType waveModifier) {
-		int groupSize = enemyPrefabEntry.groupSize;
+	void SpawnEnemyGroup(WavePrefabEntry wavePrefabEntry, EnemyWaveModifierType waveModifier) {
+		foreach (EnemyGroup group in wavePrefabEntry.enemyGroups) {
+			int groupSize = group.groupSize;
 
-		/* Apply SWARMING wave modifier, if necessary. */
-		if (waveModifier == EnemyWaveModifierType.SWARMING) {
-			groupSize *= 2;
-		}
+			/* Apply SWARMING wave modifier, if necessary. */
+			if (waveModifier == EnemyWaveModifierType.SWARMING) {
+				groupSize *= 2;
+			}
 			
-		/* Spawn group of enemies. */
-		foreach (GameObject spawner in spawners) {
-			for (int i = 0; i < groupSize; i++) {
-				EnemyMovementController newEnemy = Instantiate (enemyPrefabEntry.enemyPrefab);
-				Vector3 spawnerPosition = spawner.transform.position;
+			/* Spawn group of enemies. */
+			foreach (GameObject spawner in spawners) {
+				for (int i = 0; i < groupSize; i++) {
+					EnemyBaseController newEnemy = Instantiate (group.enemyPrefab);
+					Vector3 spawnerPosition = spawner.transform.position;
 
-				newEnemy.ApplyWaveModifier (waveModifier);
-				newEnemy.transform.position = spawnerPosition;
-				newEnemy.transform.Translate (Vector3.back * 0.5f);
-				newEnemy.setPath (spawner.GetComponent<SpawnerTile> ().pathPoints);
+					newEnemy.ApplyWaveModifier (waveModifier);
+					newEnemy.transform.position = spawnerPosition;
+					newEnemy.transform.Translate (Vector3.back * 0.5f);
+					newEnemy.setPath (spawner.GetComponent<SpawnerTile> ().pathPoints);
+				}
 			}
 		}
 	}
@@ -158,7 +166,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	/* Spawns a wave of enemies and starts the timer for the next wave. */
 	IEnumerator SpawnEnemyRoutine(EnemyWave enemyWave) {
-		EnemyPrefabEntry enemyPrefabEntry = GetEnemyPrefabEntryForWave (enemyWave);
+		WavePrefabEntry enemyPrefabEntry = GetEnemyPrefabEntryForWave (enemyWave);
 
 		for (int i = 0; i < enemyWave.enemyCount; i++) {
 			SpawnEnemyGroup (enemyPrefabEntry, enemyWave.modifier);

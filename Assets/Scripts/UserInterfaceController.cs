@@ -23,7 +23,7 @@ public class UserInterfaceController : MonoBehaviour {
 		Transform infoPanelTransform = transform.Find ("infoPanel");
 		Transform nextWaveTextTransform = infoPanelTransform.Find ("nextWaveTimerText");
 		Text t = nextWaveTextTransform.GetComponent<Text> ();
-		t.text = "Current wave: " + currentWave.enemyType.ToString();
+		t.text = "Current wave: " + currentWave.waveType.ToString();
 
 		if (currentWave.modifier != EnemySpawner.EnemyWaveModifierType.NONE) {
 			t.text += ", " + currentWave.modifier.ToString ();
@@ -42,7 +42,7 @@ public class UserInterfaceController : MonoBehaviour {
 	}
 
 	public void UpdateNextWaveTypeText(EnemyWave nextWave) {
-		SetNextWaveTypeText ("Next wave: " + nextWave.enemyType.ToString ());
+		SetNextWaveTypeText ("Next wave: " + nextWave.waveType.ToString ());
 	}
 
 	public void SetPersistentCurrencyText(string persistentCurrencyName, int persistentCurrency) {
