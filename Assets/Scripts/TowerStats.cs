@@ -29,7 +29,6 @@ public class TowerStats : MonoBehaviour {
 
 	public void ReceiveDamage(float damage)
 	{
-        Debug.Log("tower");
 		health -= damage;
 		UpdateHealthBar ();
 		if (health <= 0)

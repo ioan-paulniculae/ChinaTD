@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyShooterController : MonoBehaviour
+public class EnemyShooterController : EnemyBaseController
 {
 
     public float speed = 1.0f;
@@ -15,6 +15,15 @@ public class EnemyShooterController : MonoBehaviour
 
     private float cooldown;
     private bool shooting = false;
+
+	override public void ApplyWaveModifier(EnemySpawner.EnemyWaveModifierType modifier) {
+		/* Don't apply wave modifiers to shooters. */
+		return;
+	}
+
+	override public void setPath(GameObject[] pathPoints) {
+		/* No need to set path for shooter enemies. */
+	}
 
     private void moveTowardsTarget()
     {

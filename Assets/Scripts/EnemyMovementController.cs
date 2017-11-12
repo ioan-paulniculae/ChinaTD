@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMovementController : MonoBehaviour {
+public class EnemyMovementController : EnemyBaseController {
 
 	public float speed = 1.0f;
 	public float rotationSpeed = 10.0f;
@@ -11,7 +11,7 @@ public class EnemyMovementController : MonoBehaviour {
 	private LinkedListNode<GameObject> currentTargetNode;
 	private GameObject currentTarget;
 
-	public void ApplyWaveModifier(EnemySpawner.EnemyWaveModifierType modifier) {
+	override public void ApplyWaveModifier(EnemySpawner.EnemyWaveModifierType modifier) {
 		SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer> ();
 
 		/* TODO: maybe refactor this without hardcoded values. */
@@ -32,7 +32,7 @@ public class EnemyMovementController : MonoBehaviour {
 		}
 	}
 
-	public void setPath(GameObject[] pathPoints) {
+	override public void setPath(GameObject[] pathPoints) {
 		this.pathPoints = new LinkedList<GameObject>(pathPoints);
 		this.currentTargetNode = this.pathPoints.First;
 		this.currentTarget = this.currentTargetNode.Value;
