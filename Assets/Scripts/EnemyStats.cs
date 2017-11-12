@@ -6,6 +6,7 @@ public class EnemyStats : MonoBehaviour {
 
 	public float health = 5.0f;
 	public int livesCost = 1;
+	public bool isBoss = false;
 
 	/* Persistent currency drop rates. */
 	[Header("Persistent currency")]
@@ -22,6 +23,7 @@ public class EnemyStats : MonoBehaviour {
 	private float maxHealth;
 	private HealthBarController healthBar;
 	private GameplayManager gameplayManager;
+	private AudioManager audioManager;
 
 	void Start() {
 		maxHealth = health;
@@ -31,7 +33,10 @@ public class EnemyStats : MonoBehaviour {
 	}
 		
 	void OnDestroy() {
-		
+		if (isBoss) {
+			audioManager = FindObjectOfType<AudioManager> ();
+			audioManager.BossDead ();
+		}
 	}
 
 	public void ApplyDifficultyMultiplier() {

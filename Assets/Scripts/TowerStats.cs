@@ -11,11 +11,15 @@ public class TowerStats : MonoBehaviour {
 	private float maxHealth;
 	private HealthBarController healthBar;
 	private GameplayManager gameplayManager;
+	private AudioManager audioManager;
 
 	void Start() {
 		maxHealth = health;
 		healthBar = gameObject.GetComponentInChildren<HealthBarController> ();
 		gameplayManager = FindObjectOfType<GameplayManager> ();
+
+		audioManager = FindObjectOfType<AudioManager> ();
+		audioManager.TowerPlaced ();
 	}
 		
 	void OnDestroy() {

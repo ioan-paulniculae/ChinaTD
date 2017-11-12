@@ -66,12 +66,15 @@ public class EnemySpawner : MonoBehaviour {
 	private int specialWaveCountdown = 0;
 	private EnemyWave currentWave;
 	private EnemyWave nextWave;
+	private AudioManager audioManager;
 
 	/* Prepare first wave. */
 	void Start () {
 		nextWave = GetNextWave ();
 		uiCanvas.UpdateNextWaveTypeText (nextWave);
 		StartCoroutine (StartNextWave (gameStartTimer));
+
+		audioManager = FindObjectOfType<AudioManager> ();
 	}
 
 	/* To be used for debug purposes mainly. */
@@ -159,6 +162,12 @@ public class EnemySpawner : MonoBehaviour {
 		uiCanvas.UpdateCurrentWaveText (currentWave);
 		uiCanvas.HideNextWaveTypeText ();
 		gameplayManager.WaveSpawned ();
+
+		if (currentWave.waveType == WaveType.BOSS) {
+			audioManager.BossSpawn ();
+		} else {
+			audioManager.NewWave ();
+		}
 
 		/* Spawn the next wave. */
 		StartCoroutine (SpawnEnemyRoutine (currentWave));

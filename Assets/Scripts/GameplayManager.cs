@@ -15,6 +15,7 @@ public class GameplayManager : MonoBehaviour {
 	private BuildableTile[] buildableTiles;
 	private bool buildModeEnabled = false;
 	private PersistentCurrencyManager persistentCurrencyManager;
+	private AudioManager audioManager;
 
 	/* Keeps track of number of active towers. */
 	private Dictionary<TowerType, int> towersBuilt = new Dictionary<TowerType, int>();
@@ -40,6 +41,13 @@ public class GameplayManager : MonoBehaviour {
 
 	public void substractLives(int livesToSubstract) {
 		playerLives -= livesToSubstract;
+
+		if (playerLives > 1) {
+			audioManager.HealthLost ();
+		} else {
+			audioManager.LastHealth ();
+		}
+
 		uiCanvas.UpdateLivesText (playerLives);
 	}
 
@@ -127,6 +135,9 @@ public class GameplayManager : MonoBehaviour {
 		// Get a reference to the currency managers.
 		persistentCurrencyManager = PersistentCurrencyManager.instance;
 
+		// Get a reference to the audio manager.
+		audioManager = FindObjectOfType<AudioManager>();
+
 		// Initialize session currency.
 		sessionCurrencyManager.SetSessionCurrency(startingSessionCurrency);
 
@@ -137,6 +148,7 @@ public class GameplayManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (playerLives <= 0) {
+			audioManager.GameOver ();
 			GameOver ();
 			SceneManager.LoadScene ("Game Over", LoadSceneMode.Single);
 		}

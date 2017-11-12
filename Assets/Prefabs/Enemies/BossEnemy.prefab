@@ -172,9 +172,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 50
   livesCost: 5
+  isBoss: 1
   persistentCurrencyDropRate: 1
   persistentCurrencyMinDropAmount: 5
   persistentCurrencyMaxDropAmount: 10
+  sessionCurrencyDropRate: 1
+  sessionCurrencyMinDropAmount: 10
+  sessionCurrencyMaxDropAmount: 20
 --- !u!114 &114210904669401916
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -337,7 +341,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1047487887
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: cd42946c89e2da749a577acdf2158c85, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
